@@ -1,27 +1,87 @@
+import { useState } from "react";
+import PaginaJuego from "./components/PaginaJuego";
+import PaginaFinal from "./components/PaginaFinal";
+import VerRespuestas from "./components/VerRespuestas";
+import './components/juego.css'
+import PaginaInicio from "./components/PaginaInicio";
+import PaginaCapturar from "./components/PaginaCapturar";
+
 function App() {
 
-  return (
-    <div className="container text-center">
-      <div className="row">
-        <div className="col">
-        <h1>QUIZ GAME</h1>
-        <hr />
+  const [pagina, setPagina] = useState('Home')
+  const [puntuacion, setPuntuacion] = useState(0);
 
-        <div class="d-grid gap-2 col-6 mx-auto">
-      <button class="btn btn-secondary btn-lg" type="button">
-      <i class="bi bi-pencil-square"> Capturar</i>
-      </button>
-      
-       <button class="btn btn-info btn-lg" type="button">
-       <i class="bi bi-controller"> Jugar</i>
-       </button>
-</div>
-
-        </div>
-      </div>
-      </div>
+  const [listQuestions, setListQuestions] = useState(
+    JSON.parse(localStorage.getItem("listQuestions")) || []
   )
 
+  return (
+
+    <div className="container mt-2">
+
+      {
+        pagina === 'Home' && (
+          <div>
+            <PaginaInicio
+              setPagina={setPagina}
+            />
+          </div>
+        )
+      }
+
+      {
+        pagina === 'Capture' && (
+          <div>
+            <PaginaCapturar
+              setPagina={setPagina}
+              listQuestions={listQuestions}
+              setListQuestions={setListQuestions}
+            />
+          </div>
+        )
+      }
+
+      {
+
+        pagina === 'Game' && (
+          <div>
+            <PaginaJuego
+              pagina={pagina}
+              setPagina={setPagina}
+              listQuestions={listQuestions}
+              puntuacion={puntuacion}
+              setPuntuacion={setPuntuacion}
+            />
+          </div>
+        )
+      }
+
+      {
+        pagina === 'Finish' && (
+          <div>
+            <PaginaFinal
+              setPagina={setPagina}
+              listQuestions={listQuestions}
+              puntuacion={puntuacion}
+              setPuntuacion={setPuntuacion}
+            />
+          </div>
+        )
+      }
+
+      {
+        pagina === 'Answers' && (
+          <div>
+            <VerRespuestas
+              setPagina={setPagina}
+              listQuestions={listQuestions}
+            />
+          </div>
+        )
+      }
+
+    </div>
+  )
 }
 
 export default App
